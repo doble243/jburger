@@ -38,6 +38,25 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
+function cleanCartItems(list: CartItem[]): CartItem[] {
+  const burgerCount = list
+    .filter((i) => i.product.category === 'hamburguesas')
+    .reduce((sum, i) => sum + i.quantity, 0);
+
+  if (burgerCount === 0) {
+    return list.filter((i) => i.product.id !== 'extra-papas-burger');
+  }
+
+  return list
+    .map((i) => {
+      if (i.product.id === 'extra-papas-burger') {
+        return { ...i, quantity: Math.min(i.quantity, burgerCount) };
+      }
+      return i;
+    })
+    .filter((i) => i.quantity > 0);
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +84,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         quantity,
         subtotal: next.reduce((sum, i) => sum + i.product.price * i.quantity, 0),
       });
-      return next;
+      return cleanCartItems(next);
     });
     setJustAdded(true);
     window.clearTimeout(addTimer.current);
@@ -73,25 +92,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const removeItem = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((i) => i.product.id !== productId));
+    setItems((prev) => cleanCartItems(prev.filter((i) => i.product.id !== productId)));
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      setItems((prev) => prev.filter((i) => i.product.id !== productId));
-      return;
-    }
-    setItems((prev) =>
-      prev.map((i) =>
-        i.product.id === productId ? { ...i, quantity } : i
-      )
-    );
+    setItems((prev) => {
+      if (quantity <= 0) {
+        return cleanCartItems(prev.filter((i) => i.product.id !== productId));
+      }
+      return cleanCartItems(
+        prev.map((i) => (i.product.id === productId ? { ...i, quantity } : i))
+      );
+    });
   }, []);
 
   const clearCart = useCallback(() => setItems([]), []);
 
   const totalItems = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity, 0),
+    () =>
+      items
+        .filter((i) => i.product.id !== 'extra-papas-burger')
+        .reduce((sum, i) => sum + i.quantity, 0),
     [items]
   );
 
