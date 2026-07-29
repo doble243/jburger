@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { formatPrice, getProductById } from '../data/products';
 import { openWhatsAppOrder } from '../utils/whatsapp';
@@ -20,6 +20,9 @@ export function CartDrawer() {
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+  const addressInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -48,11 +51,19 @@ export function CartDrawer() {
 
     if (!name.trim()) {
       setErrorMsg('Por favor ingresá tu Nombre para continuar.');
+      if (nameInputRef.current) {
+        nameInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        nameInputRef.current.focus();
+      }
       return;
     }
 
     if (deliveryType === 'delivery' && !address.trim()) {
       setErrorMsg('Por favor ingresá tu Dirección de envío.');
+      if (addressInputRef.current) {
+        addressInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        addressInputRef.current.focus();
+      }
       return;
     }
 
@@ -303,6 +314,7 @@ export function CartDrawer() {
                   )}
                 </div>
                 <input
+                  ref={nameInputRef}
                   type="text"
                   value={name}
                   onChange={(e) => {
@@ -331,6 +343,7 @@ export function CartDrawer() {
                     )}
                   </div>
                   <input
+                    ref={addressInputRef}
                     type="text"
                     value={address}
                     onChange={(e) => {
