@@ -72,30 +72,36 @@ export function CombosBanner() {
                   key={combo.id}
                   variant="right"
                   delay={i * 140}
-                  className="group flex items-center gap-4 rounded-[1.25rem] border border-white/10 bg-black/35 p-3.5 backdrop-blur-md transition-all duration-500 ease-smooth hover:-translate-y-1 hover:border-cheese/35 hover:bg-black/50 hover:shadow-[0_24px_50px_-30px_rgba(240,160,32,0.7)]"
+                  className="group flex items-center gap-2.5 sm:gap-4 rounded-2xl sm:rounded-[1.25rem] border border-white/10 bg-black/40 p-2.5 sm:p-3.5 backdrop-blur-md transition-all duration-500 ease-smooth hover:-translate-y-1 hover:border-cheese/35 hover:bg-black/55 hover:shadow-[0_24px_50px_-30px_rgba(240,160,32,0.7)]"
                 >
-                  <div className="relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-white/10">
+                  <div className="relative h-14 w-14 sm:h-[4.5rem] sm:w-[4.5rem] shrink-0 overflow-hidden rounded-xl ring-1 ring-white/10">
                     <img
                       src={combo.image}
                       alt=""
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
                     />
                   </div>
+
                   <div className="min-w-0 flex-1">
-                    <p className="display-title truncate text-[1.35rem] tracking-wide text-cream">
+                    <p className="display-title truncate text-base sm:text-[1.35rem] tracking-wide text-cream">
                       {combo.name}
                     </p>
-                    <p className="line-clamp-2 text-xs text-cream-muted">{combo.description}</p>
+                    <p className="line-clamp-1 sm:line-clamp-2 text-[11px] sm:text-xs text-cream-muted">
+                      {combo.description}
+                    </p>
                   </div>
-                  <div className="flex shrink-0 flex-col items-end gap-2">
-                    <span className="price-tag text-base">{formatPrice(combo.price)}</span>
+
+                  <div className="flex shrink-0 flex-col items-end justify-center gap-1.5">
+                    <span className="price-tag text-xs sm:text-base whitespace-nowrap">
+                      {formatPrice(combo.price)}
+                    </span>
                     <button
                       type="button"
                       onClick={() => {
                         addItem(combo, 1);
                         openCart();
                       }}
-                      className="rounded-full bg-cream/10 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-cream ring-1 ring-white/10 transition hover:bg-cheese hover:text-charcoal hover:ring-cheese"
+                      className="rounded-full bg-cream/10 px-2.5 py-1 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wide text-cream ring-1 ring-white/10 active-haptic hover:bg-cheese hover:text-charcoal hover:ring-cheese"
                     >
                       Agregar
                     </button>
