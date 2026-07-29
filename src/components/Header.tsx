@@ -5,10 +5,10 @@ import { openWhatsAppSimple } from '../utils/whatsapp';
 import { getStoreStatus } from '../utils/storeStatus';
 
 const bannerMessages = [
-  '🔥 PAPAS A TU BURGER POR SOLO $70',
-  '🛵 DELIVERY SIN CARGO EN TU ZONA',
-  '🕒 ABIERTO JUEVES A DOMINGO 20:00 A 00:00',
-  '🍔 SMASH BURGERS RECIÉN HECHAS A LA PLANCHA',
+  '🔥 PROMO EXCLUSIVA · PAPAS A TU BURGER POR SOLO $70',
+  '🛵 ENVIOS DIRECTOS EN TU ZONA · PEDÍ POR WHATSAPP',
+  '🕒 ABIERTO JUEVES A DOMINGO DE 20:00 A 00:00 HS',
+  '🍔 SMASH BURGERS 100% CARNE VACUNA Y PAN BRIOCHE',
 ];
 
 export function Header() {
@@ -37,11 +37,16 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-300">
-      {/* Top Banner rotativo con efecto fade */}
-      <div className="bg-gradient-to-r from-cheese-light via-cheese to-ember px-3 py-1.5 text-center text-[10px] sm:text-xs font-black uppercase tracking-widest text-charcoal shadow-md flex items-center justify-center min-h-[30px] overflow-hidden">
+      {/* Top Banner rotativo con estética Simplemente IA */}
+      <div className="relative border-b border-cheese/40 bg-gradient-to-r from-black via-charcoal to-black px-3 py-1.5 text-center text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-cheese-light shadow-[0_4px_25px_rgba(0,0,0,0.9)] flex items-center justify-center gap-2 min-h-[34px] overflow-hidden backdrop-blur-xl">
+        <img
+          src="https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev/logo_simplemente_sf.png"
+          alt="Simplemente"
+          className="h-4.5 w-auto shrink-0 brightness-110 drop-shadow-[0_0_8px_rgba(240,160,32,0.7)]"
+        />
         <span
           className={cn(
-            'transition-all duration-300 ease-in-out inline-block',
+            'transition-all duration-300 ease-in-out inline-block font-black text-cream drop-shadow-[0_2px_10px_rgba(240,160,32,0.4)]',
             fadeState === 'in'
               ? 'opacity-100 translate-y-0 scale-100'
               : 'opacity-0 -translate-y-1.5 scale-95'
