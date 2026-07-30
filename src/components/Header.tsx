@@ -36,7 +36,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 transition-all duration-300">
+    <header className="fixed inset-x-0 top-0 z-50 transition-all duration-300 pt-[env(safe-area-inset-top)] bg-black/95">
       {/* Top Banner rotativo con estética Simplemente IA */}
       <div className="relative border-b border-cheese/40 bg-gradient-to-r from-black via-charcoal to-black px-3 py-1.5 text-center text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-cheese-light shadow-[0_4px_25px_rgba(0,0,0,0.9)] flex items-center justify-center gap-2 min-h-[34px] overflow-hidden backdrop-blur-xl">
         <img
