@@ -19,6 +19,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Prevent elastic overscroll on iOS that breaks fixed-bg feel */
+    overscroll-behavior: none;
   }
 
   body {
@@ -29,10 +31,24 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Native-app: no elastic bounce at top/bottom */
+    overscroll-behavior-y: none;
   }
 
   * {
     box-sizing: border-box;
+    /* Remove grey tap flash on Android/iOS */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent accidental text selection on all interactive controls */
+  button,
+  [role="button"],
+  nav,
+  label {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
   }
 
   button,
