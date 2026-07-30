@@ -140,7 +140,7 @@ export function MenuSection({
               ref={tabsWrapRef}
               role="tablist"
               aria-label="Categorías del menú"
-              className="no-scrollbar relative flex gap-1 overflow-x-auto"
+              className="relative grid grid-cols-3 gap-1 w-full"
             >
               <span
                 aria-hidden="true"
@@ -163,16 +163,16 @@ export function MenuSection({
                     aria-selected={isActive}
                     onClick={() => selectCategory(tab)}
                     className={cn(
-                      'relative z-10 shrink-0 rounded-full px-4 py-2.5 text-xs sm:text-sm font-extrabold uppercase tracking-wider active-haptic transition-colors duration-300 sm:px-6',
+                      'relative z-10 flex w-full items-center justify-center rounded-full px-1.5 sm:px-6 py-2.5 text-[11px] sm:text-sm font-extrabold uppercase tracking-wider active-haptic transition-colors duration-300',
                       isActive ? 'text-charcoal' : 'text-cream/60 hover:text-cream'
                     )}
                   >
-                    <span className="flex items-center gap-1.5 sm:gap-2">
-                      <span className="text-sm sm:text-base">{tabIcons[tab]}</span>
-                      <span>{categoryLabels[tab]}</span>
+                    <span className="flex items-center justify-center gap-1 sm:gap-2 truncate">
+                      <span className="text-xs sm:text-base shrink-0">{tabIcons[tab]}</span>
+                      <span className="truncate">{categoryLabels[tab]}</span>
                       <span
                         className={cn(
-                          'rounded-full px-1.5 py-0.5 text-[10px] font-black leading-none transition-colors duration-300',
+                          'rounded-full px-1.5 py-0.5 text-[9px] sm:text-[10px] font-black leading-none transition-colors duration-300 shrink-0',
                           isActive ? 'bg-charcoal/15 text-charcoal' : 'bg-white/10 text-cheese-light'
                         )}
                       >
