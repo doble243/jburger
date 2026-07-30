@@ -28,14 +28,6 @@ export default function App() {
 
   return (
     <CartProvider>
-      {/* Fixed background layer — GPU-composited, never repaints on scroll */}
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 -z-10 pointer-events-none bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(18, 14, 11, 0.35), rgba(18, 14, 11, 0.45)), url('https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev/jburger-section-background.webp')`,
-        }}
-      />
       <div
         className="page-shell grain min-h-dvh text-cream antialiased pb-16 relative"
       >

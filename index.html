@@ -15,9 +15,25 @@
     <meta property="og:title" content="J Burger — Smash Burgers" />
     <meta property="og:description" content="Smash burgers como tiene que ser. Pedí por WhatsApp." />
     <meta property="og:image" content="/og-jburger.jpg" />
+    <!-- CDN resource hints for fast background image loading -->
+    <link rel="preconnect" href="https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev" crossorigin />
+    <link rel="dns-prefetch" href="https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev" />
+    <link
+      rel="preload"
+      as="image"
+      href="https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev/jburger-section-background.webp"
+      type="image/webp"
+      fetchpriority="high"
+    />
+
     <title>J Burger — Smash Burgers</title>
   </head>
   <body>
+    <!-- Instant static background layer: paints immediately before JS hydrates -->
+    <div
+      aria-hidden="true"
+      style="position: fixed; inset: 0; z-index: -10; pointer-events: none; background-color: #120e0b; background-image: linear-gradient(to bottom, rgba(18, 14, 11, 0.35), rgba(18, 14, 11, 0.45)), url('https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev/jburger-section-background.webp'); background-size: cover; background-position: center; background-repeat: no-repeat;"
+    ></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
