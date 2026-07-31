@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import type { Product } from '../data/products';
-import { formatPrice } from '../data/products';
+import { formatPrice, isStandaloneExtra } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { flyToCart } from '../utils/flyToCart';
 import { cn } from '../utils/cn';
@@ -11,7 +11,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onOpen }: ProductCardProps) {
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const [imgLoaded, setImgLoaded] = useState(false);
   const [bump, setBump] = useState(false);
   const cardRef = useRef<HTMLElement | null>(null);
@@ -39,6 +39,19 @@ export function ProductCard({ product, onOpen }: ProductCardProps) {
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    const isIngredientExtra = product.category === 'extras' && !isStandaloneExtra(product.id);
+    if (isIngredientExtra) {
+      const hasMainItem = items.some(
+        (i) => i.product.category === 'hamburguesas' || i.product.category === 'combos'
+      );
+      if (!hasMainItem) {
+        addItem(product, 1);
+        return;
+      }
+      onOpen(product);
+      return;
+    }
+
     flyToCart(mediaRef.current, product.image);
     addItem(product, 1);
     setBump(true);

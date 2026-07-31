@@ -39,6 +39,7 @@ interface CartContextValue {
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
+  attachExtraToItem: (itemId: string, extra: CartExtra) => void;
   totalItems: number;
   subtotal: number;
   justAdded: boolean;
@@ -85,6 +86,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const closeCart = useCallback(() => setIsOpen(false), []);
   const toggleCart = useCallback(() => setIsOpen((v) => !v), []);
   const clearWarning = useCallback(() => setWarningNotice(null), []);
+
+  const attachExtraToItem = useCallback((itemId: string, extra: CartExtra) => {
+    setItems((prev) =>
+      prev.map((item) => {
+        if (item.id === itemId) {
+          const currentExtras = item.selectedExtras ?? [];
+          const hasExtra = currentExtras.some((e) => e.id === extra.id);
+          const nextExtras = hasExtra ? currentExtras : [...currentExtras, extra];
+          return { ...item, selectedExtras: nextExtras };
+        }
+        return item;
+      })
+    );
+    setWarningNotice(null);
+    setJustAdded(true);
+    window.clearTimeout(addTimer.current);
+    addTimer.current = window.setTimeout(() => setJustAdded(false), 2800);
+  }, []);
 
   const addItem = useCallback((product: Product, quantity = 1, selectedExtras: CartExtra[] = []) => {
     // Rule: Ingredient extras (non-standalone) cannot be bought alone without a burger or combo in the cart
@@ -173,6 +192,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeItem,
       updateQuantity,
       clearCart,
+      attachExtraToItem,
       totalItems,
       subtotal,
       justAdded,
@@ -190,6 +210,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeItem,
       updateQuantity,
       clearCart,
+      attachExtraToItem,
       totalItems,
       subtotal,
       justAdded,

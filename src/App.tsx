@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CartProvider } from './context/CartContext';
-import type { Product, ProductCategory } from './data/products';
+import { isStandaloneExtra, type Product, type ProductCategory } from './data/products';
 import { Header } from './components/Header';
 import { Benefits } from './components/Benefits';
 import { MenuSection } from './components/MenuSection';
@@ -11,6 +11,7 @@ import { WhatsAppWidget } from './components/WhatsAppWidget';
 import { Footer } from './components/Footer';
 import { InstagramStrip } from './components/InstagramStrip';
 import { ProductModal } from './components/ProductModal';
+import { AttachExtraModal } from './components/AttachExtraModal';
 import { Toast } from './components/Toast';
 
 export default function App() {
@@ -48,11 +49,18 @@ export default function App() {
           <BottomNavBar />
           <WhatsAppWidget />
           <Toast />
-          <ProductModal
-            product={selected}
-            onClose={() => setSelected(null)}
-            onSelectProduct={setSelected}
-          />
+          {selected && selected.category === 'extras' && !isStandaloneExtra(selected.id) ? (
+            <AttachExtraModal
+              product={selected}
+              onClose={() => setSelected(null)}
+            />
+          ) : (
+            <ProductModal
+              product={selected}
+              onClose={() => setSelected(null)}
+              onSelectProduct={setSelected}
+            />
+          )}
         </div>
       </div>
     </CartProvider>
