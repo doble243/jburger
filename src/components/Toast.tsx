@@ -3,8 +3,30 @@ import { useCart } from '../context/CartContext';
 import { formatPrice, getProductById } from '../data/products';
 
 export function Toast() {
-  const { lastAdded, justAdded, openCart, isOpen, addItem } = useCart();
+  const { lastAdded, justAdded, openCart, isOpen, addItem, warningNotice, clearWarning } = useCart();
   const [papasAdded, setPapasAdded] = useState(false);
+
+  if (warningNotice && !isOpen) {
+    return (
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-24 z-[60] flex justify-center px-3 sm:px-4 md:bottom-8"
+        role="status"
+        aria-live="polite"
+      >
+        <div className="animate-toast-in pointer-events-auto flex items-center gap-3 rounded-2xl border border-amber-500/40 bg-charcoal/95 p-3.5 sm:px-5 shadow-[0_24px_60px_-16px_rgba(0,0,0,0.95)] backdrop-blur-2xl ring-1 ring-amber-500/20 max-w-md">
+          <span className="text-xl shrink-0">💡</span>
+          <p className="text-xs font-bold leading-tight text-amber-200">{warningNotice}</p>
+          <button
+            type="button"
+            onClick={clearWarning}
+            className="ml-auto text-cream/40 hover:text-cream text-xs font-black p-1"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!justAdded || !lastAdded || isOpen) return null;
 

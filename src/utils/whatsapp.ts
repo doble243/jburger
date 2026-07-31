@@ -44,9 +44,14 @@ export function buildWhatsAppMessage(params: BuildWhatsAppParams): string {
   if (combos.length > 0) {
     lines.push('\n🍟 *COMBOS:*');
     combos.forEach((item) => {
-      const lineTotal = item.product.price * item.quantity;
+      const extrasCost = item.selectedExtras?.reduce((sum, e) => sum + e.price, 0) ?? 0;
+      const lineTotal = (item.product.price + extrasCost) * item.quantity;
+      let extrasNote = '';
+      if (item.selectedExtras && item.selectedExtras.length > 0) {
+        extrasNote = ` _[Agregados: ${item.selectedExtras.map((e) => e.name).join(', ')}]_`;
+      }
       lines.push(
-        `• ${item.quantity}x *${item.product.name}* _(incluye papas + bebida)_ — ${formatPrice(lineTotal)}`
+        `• ${item.quantity}x *${item.product.name}*${extrasNote} — ${formatPrice(lineTotal)}`
       );
     });
   }
@@ -60,7 +65,8 @@ export function buildWhatsAppMessage(params: BuildWhatsAppParams): string {
         burgerPapasCount = Math.min(item.quantity, papasAvailable);
         papasAvailable -= burgerPapasCount;
       }
-      const unitBasePrice = item.product.price;
+      const extrasCost = item.selectedExtras?.reduce((sum, e) => sum + e.price, 0) ?? 0;
+      const unitBasePrice = item.product.price + extrasCost;
       const itemTotalPrice = unitBasePrice * item.quantity + burgerPapasCount * 70;
 
       let papasNote = '';
@@ -72,8 +78,13 @@ export function buildWhatsAppMessage(params: BuildWhatsAppParams): string {
         }
       }
 
+      let extrasNote = '';
+      if (item.selectedExtras && item.selectedExtras.length > 0) {
+        extrasNote = ` _[Agregados: ${item.selectedExtras.map((e) => e.name).join(', ')}]_`;
+      }
+
       lines.push(
-        `• ${item.quantity}x *${item.product.name}*${papasNote} — ${formatPrice(itemTotalPrice)}`
+        `• ${item.quantity}x *${item.product.name}*${extrasNote}${papasNote} — ${formatPrice(itemTotalPrice)}`
       );
     });
   }

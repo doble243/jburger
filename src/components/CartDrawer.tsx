@@ -136,7 +136,8 @@ export function CartDrawer() {
                     papasAvailable -= burgerPapasCount;
                   }
 
-                  const unitBasePrice = item.product.price;
+                  const extrasCost = item.selectedExtras?.reduce((sum, e) => sum + e.price, 0) ?? 0;
+                  const unitBasePrice = item.product.price + extrasCost;
                   const itemTotalPrice = (unitBasePrice * item.quantity) + (burgerPapasCount * 70);
 
                   const handleAddBurgerPapas = () => {
@@ -147,13 +148,13 @@ export function CartDrawer() {
 
                   const handleRemoveBurgerPapas = () => {
                     if (papasItem) {
-                      updateQuantity('extra-papas-burger', papasItem.quantity - 1);
+                      updateQuantity(papasItem.id, papasItem.quantity - 1);
                     }
                   };
 
                   return (
                     <li
-                      key={item.product.id}
+                      key={item.id}
                       className={cn(
                         'flex flex-col gap-3 rounded-2xl border p-3.5 transition-all',
                         burgerPapasCount > 0
@@ -173,6 +174,18 @@ export function CartDrawer() {
                               <p className="display-title text-lg leading-none tracking-wide text-cream">
                                 {item.product.name}
                               </p>
+                              {item.selectedExtras && item.selectedExtras.length > 0 && (
+                                <div className="mt-1 flex flex-wrap gap-1">
+                                  {item.selectedExtras.map((e) => (
+                                    <span
+                                      key={e.id}
+                                      className="rounded bg-cheese/20 px-1.5 py-0.5 text-[9px] font-black uppercase text-cheese-light border border-cheese/30"
+                                    >
+                                      + {e.name} ({formatPrice(e.price)})
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
                               {burgerPapasCount > 0 && (
                                 <span className="mt-1.5 inline-flex items-center gap-1 rounded bg-cheese/20 px-2 py-0.5 text-[9px] font-black uppercase text-cheese-light border border-cheese/40">
                                   🍟 Con Papas +$70
@@ -181,7 +194,7 @@ export function CartDrawer() {
                             </div>
                             <button
                               type="button"
-                              onClick={() => removeItem(item.product.id)}
+                              onClick={() => removeItem(item.id)}
                               className="text-cream/35 transition hover:text-cream"
                               aria-label={`Eliminar ${item.product.name}`}
                             >
@@ -206,7 +219,7 @@ export function CartDrawer() {
                             <div className="inline-flex items-center rounded-full border border-white/10 bg-black/35">
                               <button
                                 type="button"
-                                onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 className="flex h-8 w-8 items-center justify-center text-cream hover:bg-white/[0.04] transition rounded-l-full"
                                 aria-label="Restar"
                               >
@@ -217,7 +230,7 @@ export function CartDrawer() {
                               </span>
                               <button
                                 type="button"
-                                onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                 className="flex h-8 w-8 items-center justify-center text-cream hover:bg-white/[0.04] transition rounded-r-full"
                                 aria-label="Sumar"
                               >

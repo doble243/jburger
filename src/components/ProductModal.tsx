@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Product } from '../data/products';
-import { formatPrice, products as catalogProducts } from '../data/products';
+import type { ExtraOption, Product } from '../data/products';
+import {
+  formatPrice,
+  INGREDIENT_EXTRAS,
+  products as catalogProducts,
+} from '../data/products';
 import { useCart } from '../context/CartContext';
 import { cn } from '../utils/cn';
 
@@ -13,6 +17,7 @@ interface ProductModalProps {
 export function ProductModal({ product, onClose, onSelectProduct }: ProductModalProps) {
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
+  const [selectedExtras, setSelectedExtras] = useState<ExtraOption[]>([]);
   const [visible, setVisible] = useState(false);
   const [animDir, setAnimDir] = useState<'next' | 'prev' | null>(null);
   const [dragOffset, setDragOffset] = useState(0);
@@ -30,6 +35,7 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
   useEffect(() => {
     if (product) {
       setQty(1);
+      setSelectedExtras([]);
       setDragOffset(0);
       requestAnimationFrame(() => setVisible(true));
       document.body.style.overflow = 'hidden';
@@ -42,11 +48,20 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
     };
   }, [product]);
 
+  const toggleExtra = (extra: ExtraOption) => {
+    setSelectedExtras((prev) =>
+      prev.some((e) => e.id === extra.id)
+        ? prev.filter((e) => e.id !== extra.id)
+        : [...prev, extra]
+    );
+  };
+
   const handlePrev = () => {
     if (!categoryProducts.length || !onSelectProduct || currentIndex === -1) return;
     const prevIdx = (currentIndex - 1 + categoryProducts.length) % categoryProducts.length;
     setAnimDir('prev');
     setQty(1);
+    setSelectedExtras([]);
     setDragOffset(0);
     onSelectProduct(categoryProducts[prevIdx]);
     window.setTimeout(() => setAnimDir(null), 350);
@@ -57,6 +72,7 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
     const nextIdx = (currentIndex + 1) % categoryProducts.length;
     setAnimDir('next');
     setQty(1);
+    setSelectedExtras([]);
     setDragOffset(0);
     onSelectProduct(categoryProducts[nextIdx]);
     window.setTimeout(() => setAnimDir(null), 350);
@@ -249,6 +265,48 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
               </div>
             )}
 
+            {(product.category === 'hamburguesas' || product.category === 'combos') && (
+              <div className="space-y-2 border-t border-white/10 pt-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-cheese-light flex items-center gap-1.5">
+                    <span>🔥</span> Agregale a tu pedido:
+                  </span>
+                  <span className="text-[10px] font-bold text-cream/40 uppercase">Opcional</span>
+                </div>
+                <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+                  {INGREDIENT_EXTRAS.map((extra) => {
+                    const isChecked = selectedExtras.some((e) => e.id === extra.id);
+                    return (
+                      <button
+                        key={extra.id}
+                        type="button"
+                        onClick={() => toggleExtra(extra)}
+                        className={cn(
+                          'flex items-center justify-between rounded-xl border p-2 text-left transition-all active-haptic',
+                          isChecked
+                            ? 'border-cheese/80 bg-cheese/15 text-cheese-light font-bold shadow-[0_0_12px_rgba(240,160,32,0.2)]'
+                            : 'border-white/10 bg-white/[0.03] text-cream/80 hover:bg-white/[0.07]'
+                        )}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={cn(
+                              'flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[9px] font-black',
+                              isChecked ? 'border-cheese bg-cheese text-charcoal' : 'border-white/30'
+                            )}
+                          >
+                            {isChecked && '✓'}
+                          </span>
+                          <span className="text-xs">{extra.name}</span>
+                        </div>
+                        <span className="text-xs font-black text-cheese-light">+{formatPrice(extra.price)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="mt-auto flex items-center gap-3 pt-2">
               <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1">
                 <button
@@ -273,7 +331,7 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
               </div>
 
               <button type="button" onClick={handleAdd} className="btn-primary min-h-12 flex-1 !px-4 active-haptic">
-                Agregar · {formatPrice(product.price * qty)}
+                Agregar · {formatPrice(unitPrice * qty)}
               </button>
             </div>
           </div>

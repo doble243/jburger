@@ -335,3 +335,28 @@ export function getProductById(id: string): Product | undefined {
 export function getProductsByCategory(category: ProductCategory): Product[] {
   return products.filter((p) => p.category === category && p.available);
 }
+
+export interface ExtraOption {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export const INGREDIENT_EXTRAS: ExtraOption[] = [
+  { id: 'extra-cheddar', name: 'Extra Cheddar', price: 20 },
+  { id: 'extra-bacon', name: 'Extra Bacon', price: 30 },
+  { id: 'extra-huevo', name: 'Huevo a la plancha', price: 20 },
+  { id: 'extra-bano-cheddar', name: 'Baño de Cheddar', price: 50 },
+  { id: 'extra-carne', name: 'Extra Carne Smash', price: 70 },
+];
+
+export const STANDALONE_EXTRA_IDS = [
+  'extra-papas-burger',
+  'extra-papas-cheddar-bacon',
+  'extra-fritas',
+  'extra-fritas-cheddar',
+];
+
+export function isStandaloneExtra(productId: string): boolean {
+  return STANDALONE_EXTRA_IDS.includes(productId);
+}
