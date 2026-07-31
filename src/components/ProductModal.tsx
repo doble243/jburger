@@ -100,8 +100,11 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
 
   if (!product) return null;
 
+  const extrasTotal = selectedExtras.reduce((sum, e) => sum + e.price, 0);
+  const unitPrice = product.price + extrasTotal;
+
   const handleAdd = () => {
-    addItem(product, qty);
+    addItem(product, qty, selectedExtras);
     handleClose();
   };
 
