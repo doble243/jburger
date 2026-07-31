@@ -10,6 +10,7 @@ export function CartDrawer() {
     items,
     isOpen,
     closeCart,
+    addItem,
     updateQuantity,
     removeItem,
     subtotal,
@@ -140,13 +141,15 @@ export function CartDrawer() {
                   const unitBasePrice = item.product.price + extrasCost;
                   const itemTotalPrice = (unitBasePrice * item.quantity) + (burgerPapasCount * 70);
 
-                  const handleAddBurgerPapas = () => {
+                  const handleAddBurgerPapas = (e: React.MouseEvent) => {
+                    e.stopPropagation();
                     if (papasProduct) {
                       addItem(papasProduct, 1);
                     }
                   };
 
-                  const handleRemoveBurgerPapas = () => {
+                  const handleRemoveBurgerPapas = (e: React.MouseEvent) => {
+                    e.stopPropagation();
                     if (papasItem) {
                       updateQuantity(papasItem.id, papasItem.quantity - 1);
                     }
