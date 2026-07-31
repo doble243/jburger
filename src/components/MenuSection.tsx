@@ -20,9 +20,9 @@ const tabIcons: Record<ProductCategory, string> = {
 };
 
 const tabMeta: Record<ProductCategory, { count: string; hint: string }> = {
-  hamburguesas: { count: '5', hint: 'Smash de 1 a 4 carnes vacunas' },
-  combos: { count: '3', hint: 'Burger + papas + bebida' },
-  extras: { count: '4', hint: 'Papas, cheddar y bacon' },
+  hamburguesas: { count: '7', hint: 'Smash de 1 a 4 carnes vacunas' },
+  combos: { count: '13', hint: 'Promos para 1, 2, 3 y 4 personas' },
+  extras: { count: '9', hint: 'Papas, cheddar, bacon y adicionales' },
 };
 
 interface MenuSectionProps {
