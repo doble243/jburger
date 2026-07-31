@@ -18,6 +18,7 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
   const { addItem } = useCart();
   const [qty, setQty] = useState(1);
   const [selectedExtras, setSelectedExtras] = useState<ExtraOption[]>([]);
+  const [showExtrasDropdown, setShowExtrasDropdown] = useState(false);
   const [visible, setVisible] = useState(false);
   const [animDir, setAnimDir] = useState<'next' | 'prev' | null>(null);
   const [dragOffset, setDragOffset] = useState(0);
@@ -36,6 +37,7 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
     if (product) {
       setQty(1);
       setSelectedExtras([]);
+      setShowExtrasDropdown(false);
       setDragOffset(0);
       requestAnimationFrame(() => setVisible(true));
       document.body.style.overflow = 'hidden';
@@ -239,7 +241,7 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
             </button>
           </div>
 
-          <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5 sm:p-6">
+          <div className="flex flex-1 flex-col overflow-y-auto p-5 sm:p-6 gap-4">
             <div className="flex items-start justify-between gap-3">
               <div>
                 {product.badge && (
@@ -269,74 +271,92 @@ export function ProductModal({ product, onClose, onSelectProduct }: ProductModal
             )}
 
             {(product.category === 'hamburguesas' || product.category === 'combos') && (
-              <div className="space-y-2 border-t border-white/10 pt-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-cheese-light flex items-center gap-1.5">
-                    <span>🔥</span> Agregale a tu pedido:
+              <div className="space-y-2.5 border-t border-white/10 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setShowExtrasDropdown((prev) => !prev)}
+                  className="flex w-full items-center justify-between rounded-xl border border-white/12 bg-white/[0.04] p-3 text-left transition hover:border-cheese/40 hover:bg-white/[0.08] active-haptic"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">🔥</span>
+                    <span className="text-xs font-black uppercase tracking-wider text-cheese-light">
+                      Agregale extras a tu burger
+                    </span>
+                    {selectedExtras.length > 0 && (
+                      <span className="rounded-full bg-cheese px-2 py-0.5 text-[10px] font-black text-charcoal shadow">
+                        +{selectedExtras.length}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[11px] font-bold text-cream/60">
+                    {showExtrasDropdown ? '▲ Ocultar' : '▼ Ver extras'}
                   </span>
-                  <span className="text-[10px] font-bold text-cream/40 uppercase">Opcional</span>
-                </div>
-                <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-                  {INGREDIENT_EXTRAS.map((extra) => {
-                    const isChecked = selectedExtras.some((e) => e.id === extra.id);
-                    return (
-                      <button
-                        key={extra.id}
-                        type="button"
-                        onClick={() => toggleExtra(extra)}
-                        className={cn(
-                          'flex items-center justify-between rounded-xl border p-2 text-left transition-all active-haptic',
-                          isChecked
-                            ? 'border-cheese/80 bg-cheese/15 text-cheese-light font-bold shadow-[0_0_12px_rgba(240,160,32,0.2)]'
-                            : 'border-white/10 bg-white/[0.03] text-cream/80 hover:bg-white/[0.07]'
-                        )}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={cn(
-                              'flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[9px] font-black',
-                              isChecked ? 'border-cheese bg-cheese text-charcoal' : 'border-white/30'
-                            )}
-                          >
-                            {isChecked && '✓'}
-                          </span>
-                          <span className="text-xs">{extra.name}</span>
-                        </div>
-                        <span className="text-xs font-black text-cheese-light">+{formatPrice(extra.price)}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                </button>
+
+                {(showExtrasDropdown || selectedExtras.length > 0) && (
+                  <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 animate-fade-in pt-1">
+                    {INGREDIENT_EXTRAS.map((extra) => {
+                      const isChecked = selectedExtras.some((e) => e.id === extra.id);
+                      return (
+                        <button
+                          key={extra.id}
+                          type="button"
+                          onClick={() => toggleExtra(extra)}
+                          className={cn(
+                            'flex items-center justify-between rounded-xl border p-2.5 text-left transition-all active-haptic',
+                            isChecked
+                              ? 'border-cheese/80 bg-cheese/15 text-cheese-light font-bold shadow-[0_0_12px_rgba(240,160,32,0.2)]'
+                              : 'border-white/10 bg-white/[0.03] text-cream/80 hover:bg-white/[0.07]'
+                          )}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={cn(
+                                'flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[9px] font-black',
+                                isChecked ? 'border-cheese bg-cheese text-charcoal' : 'border-white/30'
+                              )}
+                            >
+                              {isChecked && '✓'}
+                            </span>
+                            <span className="text-xs">{extra.name}</span>
+                          </div>
+                          <span className="text-xs font-black text-cheese-light">+{formatPrice(extra.price)}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
+          </div>
 
-            <div className="mt-auto flex items-center gap-3 pt-2">
-              <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1">
-                <button
-                  type="button"
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-cream transition hover:bg-white/10 active-haptic"
-                  aria-label="Menos"
-                >
-                  −
-                </button>
-                <span className="w-8 text-center font-extrabold text-cream" aria-live="polite">
-                  {qty}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setQty((q) => q + 1)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-cream transition hover:bg-white/10 active-haptic"
-                  aria-label="Más"
-                >
-                  +
-                </button>
-              </div>
-
-              <button type="button" onClick={handleAdd} className="btn-primary min-h-12 flex-1 !px-4 active-haptic">
-                Agregar · {formatPrice(unitPrice * qty)}
+          {/* Sticky Bottom Action Bar Always Visible */}
+          <div className="shrink-0 border-t border-white/12 bg-charcoal/95 p-4 sm:p-5 backdrop-blur-xl flex items-center gap-3">
+            <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1 shrink-0">
+              <button
+                type="button"
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-cream transition hover:bg-white/10 active-haptic"
+                aria-label="Menos"
+              >
+                −
+              </button>
+              <span className="w-8 text-center font-extrabold text-cream" aria-live="polite">
+                {qty}
+              </span>
+              <button
+                type="button"
+                onClick={() => setQty((q) => q + 1)}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-cream transition hover:bg-white/10 active-haptic"
+                aria-label="Más"
+              >
+                +
               </button>
             </div>
+
+            <button type="button" onClick={handleAdd} className="btn-primary min-h-12 flex-1 !px-4 active-haptic shadow-[0_10px_30px_rgba(240,160,32,0.3)]">
+              Agregar · {formatPrice(unitPrice * qty)}
+            </button>
           </div>
         </div>
       </div>
