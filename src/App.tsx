@@ -13,6 +13,7 @@ import { InstagramStrip } from './components/InstagramStrip';
 import { ProductModal } from './components/ProductModal';
 import { AttachExtraModal } from './components/AttachExtraModal';
 import { Toast } from './components/Toast';
+import { ConstructionTape } from './components/ConstructionTape';
 
 export default function App() {
   const [selected, setSelected] = useState<Product | null>(null);
@@ -61,6 +62,7 @@ export default function App() {
               onSelectProduct={setSelected}
             />
           )}
+          <ConstructionTape />
         </div>
       </div>
     </CartProvider>

@@ -39,11 +39,19 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-300 pt-[env(safe-area-inset-top)] bg-black/95">
       {/* Top Banner rotativo con estética Simplemente IA */}
       <div className="relative border-b border-cheese/40 bg-gradient-to-r from-black via-charcoal to-black px-3 py-1.5 text-center text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-cheese-light shadow-[0_4px_25px_rgba(0,0,0,0.9)] flex items-center justify-center gap-2 min-h-[34px] overflow-hidden backdrop-blur-xl">
-        <img
-          src="https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev/logo_simplemente_sf.png"
-          alt="Simplemente"
-          className="h-4.5 w-auto shrink-0 brightness-110 drop-shadow-[0_0_8px_rgba(240,160,32,0.7)]"
-        />
+        <a
+          href="https://www.simplemente.com.uy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex shrink-0 transition-transform hover:scale-110"
+          title="Ir a www.simplemente.com.uy"
+        >
+          <img
+            src="https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev/logo_simplemente_sf.png"
+            alt="Simplemente"
+            className="h-4.5 w-auto shrink-0 brightness-110 drop-shadow-[0_0_8px_rgba(240,160,32,0.7)]"
+          />
+        </a>
         <span
           className={cn(
             'transition-all duration-300 ease-in-out inline-block font-black text-cream drop-shadow-[0_2px_10px_rgba(240,160,32,0.4)]',
