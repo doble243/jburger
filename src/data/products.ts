@@ -235,7 +235,7 @@ export const products: Product[] = [
     description: 'Porción extra de queso cheddar fundido.',
     price: 20,
     category: 'extras',
-    image: '/images/extras-menu.jpg',
+    image: '/images/extra-cheddar.jpg',
     available: true,
   },
   {
@@ -244,7 +244,7 @@ export const products: Product[] = [
     description: 'Tiras de panceta bien crocante.',
     price: 30,
     category: 'extras',
-    image: '/images/extras-menu.jpg',
+    image: '/images/extra-bacon.jpg',
     available: true,
   },
   {
@@ -253,7 +253,7 @@ export const products: Product[] = [
     description: 'Huevo dorado a la plancha.',
     price: 20,
     category: 'extras',
-    image: '/images/extras-menu.jpg',
+    image: '/images/huevo-plancha.jpg',
     available: true,
   },
   {
@@ -262,7 +262,7 @@ export const products: Product[] = [
     description: 'Abundante baño de cheddar derretido para tu burger o papas.',
     price: 50,
     category: 'extras',
-    image: '/images/extras-menu.jpg',
+    image: '/images/bano-cheddar.jpg',
     available: true,
   },
   {
@@ -271,7 +271,7 @@ export const products: Product[] = [
     description: 'Un medallón adicional de carne smash 100% vacuna.',
     price: 70,
     category: 'extras',
-    image: '/images/extras-menu.jpg',
+    image: '/images/extra-carne.jpg',
     available: true,
   },
   {
